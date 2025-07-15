@@ -1,12 +1,12 @@
 {
-  "name": "bin-cc-bot",
+  "name": "bin-generator-bot",
   "version": "1.0.0",
-  "description": "Telegram bot to generate random credit cards from BIN",
-  "main": "bot.js",
+  "description": "Telegram bot to generate credit cards from BIN",
+  "main": "server.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node server.js"
   },
   "dependencies": {
-    "telegraf": "^4.16.0"
+    "node-telegram-bot-api": "^0.61.0"
   }
 }
