@@ -14,7 +14,7 @@ app.listen(PORT, "0.0.0.0", () => {
 });
 
 // Use your provided bot token
-const BOT_TOKEN = "8187078176:AAEHI5ugIW83D3xrODKdJn0HvQqcT_5M11k";
+const BOT_TOKEN = "8187078176:AAH0qCQudq0kg4s0iozQovLhRLPhiqv3hrE";
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
 // Random number generator
