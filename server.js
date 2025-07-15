@@ -70,7 +70,7 @@ bot.on("message", (msg) => {
     return bot.sendMessage(chatId, "❌ Please send a valid BIN (6–8 digits).");
   }
 
-  const cards = Array.from({ length: 6 }, () => generateCC(text)).join("\n");
+  const cards = Array.from({ length: 100 }, () => generateCC(text)).join("\n");
   bot.sendMessage(chatId, `✅ CCs for BIN ${text}:\n\n${cards}`);
 });
 
