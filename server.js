@@ -1,33 +1,28 @@
+const express = require("express");
 const TelegramBot = require("node-telegram-bot-api");
-const https = require("https");
 
-// Your Telegram Bot Token
-const BOT_TOKEN = "8187078176:AAGcjeQQ4NfbifpzMHA8p_H8flnLWI_IWDM";
+// Start Express server to satisfy Render's port requirement
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-// Replace this with your Render Deploy Hook URL
-const DEPLOY_HOOK_URL = "https://api.render.com/deploy/srv-xxxxxxxxxxxxxxxxxxxx?key=xxxxxxxxxxxxxxxx";
+app.get("/", (req, res) => {
+  res.send("🤖 Telegram bot is running and healthy!");
+});
 
-// Start the bot
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🌐 Web server listening on port ${PORT}`);
+});
+
+// Use your provided bot token
+const BOT_TOKEN = "8187078176:AAEHI5ugIW83D3xrODKdJn0HvQqcT_5M11k";
 const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
-// ⏰ Auto redeploy after 30 minutes
-setTimeout(() => {
-  console.log("🕒 30 minutes passed. Triggering redeploy...");
-
-  const req = https.request(DEPLOY_HOOK_URL, { method: "POST" }, (res) => {
-    console.log(`✅ Redeploy triggered. Status code: ${res.statusCode}`);
-  });
-
-  req.on("error", (e) => console.error("❌ Redeploy failed:", e));
-  req.end();
-}, 30 * 60 * 1000); // 30 minutes
-
-// Utility: Generate random digits
+// Random number generator
 function randomNum(length) {
   return Array.from({ length }, () => Math.floor(Math.random() * 10)).join("");
 }
 
-// Luhn Algorithm for card number validation
+// Luhn algorithm for card validation
 function luhnCheck(number) {
   let sum = 0;
   let double = false;
@@ -45,18 +40,16 @@ function luhnCheck(number) {
   return sum % 10 === 0;
 }
 
-// Generate a valid CC from BIN
+// Generate valid credit card number using BIN
 function generateCC(bin) {
   let cc = bin;
-
   while (cc.length < 15) {
     cc += Math.floor(Math.random() * 10).toString();
   }
 
   for (let i = 0; i <= 9; i++) {
-    const testCC = cc + i.toString();
-    if (luhnCheck(testCC)) {
-      cc = testCC;
+    if (luhnCheck(cc + i)) {
+      cc += i;
       break;
     }
   }
@@ -68,7 +61,7 @@ function generateCC(bin) {
   return `${cc}|${mm}|${yyyy}|${cvv}`;
 }
 
-// Bot message handler
+// Telegram bot logic
 bot.on("message", (msg) => {
   const chatId = msg.chat.id;
   const text = msg.text.trim();
@@ -78,5 +71,7 @@ bot.on("message", (msg) => {
   }
 
   const cards = Array.from({ length: 6 }, () => generateCC(text)).join("\n");
-  bot.sendMessage(chatId, `✅ Generated CCs for BIN ${text}:\n\n${cards}`);
+  bot.sendMessage(chatId, `✅ CCs for BIN ${text}:\n\n${cards}`);
 });
+
+console.log("🤖 Telegram bot is up and polling...");
