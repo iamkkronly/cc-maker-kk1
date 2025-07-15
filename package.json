@@ -1,7 +1,7 @@
 {
   "name": "bin-cc-bot",
   "version": "1.0.0",
-  "description": "Telegram bot to generate random CC from BIN",
+  "description": "Telegram bot to generate random credit cards from BIN",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"
